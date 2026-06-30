@@ -1,4 +1,9 @@
 function calculateAndDisplayGPA() {
+  const table = document.querySelector('table');
+  if (!table) return;
+  if (!table.innerText.includes('得点')) {
+    return;
+  }
   const rows = document.querySelectorAll('table tbody tr');
   
   let totalCredits = 0;
