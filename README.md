@@ -1,6 +1,6 @@
 # LiveCampus GPA Calculator (Score-based)
 
-九州工業大学のLiveCampus Uで、成績情報詳細ページを開いた際に自動でGPAを計算して表示するChrome拡張機能。
+LiveCampus Uで、成績情報詳細ページを開いた際に自動でGPAを計算して表示するChrome拡張機能。
 
 ## 特徴
 - 取得単位数と点数をDOMから直接読み取り計算
