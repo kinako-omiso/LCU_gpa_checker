@@ -33,7 +33,7 @@ function calculateAndDisplayGPA() {
 
   if (totalCredits === 0) return;
 
-  const gpa = (totalGP / totalCredits).toFixed(2);
+  const gpa = (totalGP / totalCredits).toFixed(3);
 
   // 画面上部に結果を表示する
   const resultDiv = document.createElement('div');
