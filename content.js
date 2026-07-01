@@ -71,6 +71,7 @@ function calculateAndDisplayGPA() {
   resultDiv.style.fontSize = '18px';
   resultDiv.style.fontWeight = 'bold';
   resultDiv.style.borderRadius = '4px';
+  resultDiv.style.textAlign = 'center';
   resultDiv.innerHTML = `総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
 
   const tableWrapper = table.parentNode;
@@ -78,11 +79,9 @@ function calculateAndDisplayGPA() {
 }
 
 
-// 監視カメラ（Observer）の準備
 const observer = new MutationObserver((mutations) => {
-  // DOMに変化（要素の追加や変更）があったら、とにかく計算関数を呼ぶ
-  // （関数の中で、すでに表示済みか、テーブルがあるか等をチェックして弾く）
   calculateAndDisplayGPA();
+
 });
 
 // document.body を対象に、子要素の追加やテキストの変更を監視し始める
