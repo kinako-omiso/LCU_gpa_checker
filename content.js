@@ -87,6 +87,6 @@ const observer = new MutationObserver((mutations) => {
 
 // document.body を対象に、子要素の追加やテキストの変更を監視し始める
 observer.observe(document.body, {
-  childList: true, // 子ノードの追加・削除を監視
-  subtree: true    // 対象ノードの子孫すべてを監視
+  childList: true, 
+  subtree: true    
 });

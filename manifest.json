@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
   "name": "LiveCampus GPA Calculator",
-  "version": "1.0",
-  "description": "成績画面にGPAを自動計算して表示する拡張機能",
+  "version": "1.0.0",
+  "description": "LiveCampusの成績画面で、点数基準のGPAを自動計算して表示します。",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "content_scripts": [
     {
       "matches": ["*://*.kyutech.ac.jp/*"],
