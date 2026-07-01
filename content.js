@@ -1,26 +1,49 @@
 function calculateAndDisplayGPA() {
   const table = document.querySelector('table');
   if (!table) return;
-  if (!table.innerText.includes('得点')) {
-    return;
-  }
-  const rows = document.querySelectorAll('table tbody tr');
+
+  // --- ★変更点1: 列のインデックスを動的に探す ---
+  // 表の最初の行（見出し行）を取得。thだけでなくtdが使われている場合も考慮
+  const headerRow = table.querySelector('tr');
+  if (!headerRow) return;
+
+  const headers = headerRow.querySelectorAll('th, td');
+  
+  // 見つからなかった場合の初期値として -1 を入れておく
+  let creditIndex = -1;
+  let scoreIndex = -1;
+
+  // ヘッダーのセルを1つずつ確認して、インデックス（列番号）を記録
+  headers.forEach((cell, index) => {
+    const text = cell.innerText.trim();
+    if (text === '単位') creditIndex = index;
+    if (text === '得点') scoreIndex = index;
+  });
+
+  // もし「単位」か「得点」の列が見つからなかったら、この表は対象外として終了
+  if (creditIndex === -1 || scoreIndex === -1) return;
+  // ----------------------------------------------
+
+
+  const rows = table.querySelectorAll('tbody tr, tr');
   
   let totalCredits = 0;
   let totalGP = 0;
 
   rows.forEach(row => {
     const cells = row.querySelectorAll('td');
+    
+  
+    if (cells.length <= Math.max(creditIndex, scoreIndex)) return;
 
-    if (cells.length < 8) return;
-
-    // 画像の列順（0始まり）: 5番目が単位、6番目が点数
-    const creditsStr = cells[5].innerText.trim();
-    const scoreStr = cells[6].innerText.trim();
+  
+    const creditsStr = cells[creditIndex].innerText.trim();
+    const scoreStr = cells[scoreIndex].innerText.trim();
 
     const credits = parseFloat(creditsStr);
-    const score = parseFloat(scoreStr); 
-    if (isNaN(score)) return;
+    const score = parseFloat(scoreStr);
+
+    if (isNaN(credits) || isNaN(score)) return;
 
     let gp = 0;
     if (score >= 90) gp = 4.0;
@@ -30,7 +53,7 @@ function calculateAndDisplayGPA() {
     else if (score >= 70) gp = 2.0;
     else if (score >= 65) gp = 1.5;
     else if (score >= 60) gp = 1.0;
-    else gp = 0.0; 
+    else gp = 0.0;
 
     totalCredits += credits;
     totalGP += (credits * gp);
@@ -40,20 +63,12 @@ function calculateAndDisplayGPA() {
 
   const gpa = (totalGP / totalCredits).toFixed(3);
 
-  // 画面上部に結果を表示する
+  // （これ以降の表示UIを作成する処理は元のまま）
   const resultDiv = document.createElement('div');
-  resultDiv.style.padding = '15px';
-  resultDiv.style.margin = '20px auto';
-  resultDiv.style.maxWidth = '800px';
-  resultDiv.style.backgroundColor = '#e3f2fd';
-  resultDiv.style.borderLeft = '6px solid #1976d2';
-  resultDiv.style.fontSize = '18px';
-  resultDiv.style.fontWeight = 'bold';
-  resultDiv.style.borderRadius = '4px';
-  resultDiv.innerHTML = ` 総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
+  // ... (省略)
+  resultDiv.innerHTML = `🌟 総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
 
-  // 成績テーブルの上あたりに挿入
-  const tableWrapper = document.querySelector('table').parentNode;
+  const tableWrapper = table.parentNode;
   tableWrapper.insertBefore(resultDiv, tableWrapper.firstChild);
 }
 
