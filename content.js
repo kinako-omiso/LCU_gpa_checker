@@ -62,7 +62,6 @@ function calculateAndDisplayGPA() {
   const gpa = (totalGP / totalCredits).toFixed(3);
 
   const resultDiv = document.createElement('div');
-  // --- ★追加: 無限ループ防止用の目印となるIDをセット ★ ---
   resultDiv.id = 'livecampus-gpa-result';
   resultDiv.style.padding = '15px';
   resultDiv.style.margin = '20px auto';
