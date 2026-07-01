@@ -68,6 +68,7 @@ function calculateAndDisplayGPA() {
   resultDiv.style.maxWidth = '800px';
   resultDiv.style.backgroundColor = '#e3f2fd';
   resultDiv.style.borderLeft = '6px solid #1976d2';
+  resultDiv.style.borderRight = '6px solid #1976d2';
   resultDiv.style.fontSize = '18px';
   resultDiv.style.fontWeight = 'bold';
   resultDiv.style.borderRadius = '4px';
