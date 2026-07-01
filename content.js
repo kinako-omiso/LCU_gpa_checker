@@ -1,29 +1,30 @@
 function calculateAndDisplayGPA() {
-  const table = document.querySelector('table');
-  if (!table) return;
+  // --- ★追加: 無限ループ防止 ★ ---
+  // すでに結果のUI（目印となるID）が表示されていたら、何もしないで終了
+  if (document.getElementById('livecampus-gpa-result')) return;
 
-  // --- ★変更点1: 列のインデックスを動的に探す ---
-  // 表の最初の行（見出し行）を取得。thだけでなくtdが使われている場合も考慮
+  const table = document.querySelector('table');
+  if (!table) return; // テーブルがまだ読み込まれていなければ終了
+
+  // 「得点」が含まれない画面（別の成績サマリー画面など）なら終了
+  if (!table.innerText.includes('得点')) return;
+
+  // 表の最初の行（見出し行）を取得
   const headerRow = table.querySelector('tr');
   if (!headerRow) return;
 
   const headers = headerRow.querySelectorAll('th, td');
   
-  // 見つからなかった場合の初期値として -1 を入れておく
   let creditIndex = -1;
   let scoreIndex = -1;
 
-  // ヘッダーのセルを1つずつ確認して、インデックス（列番号）を記録
   headers.forEach((cell, index) => {
     const text = cell.innerText.trim();
     if (text === '単位') creditIndex = index;
     if (text === '得点') scoreIndex = index;
   });
 
-  // もし「単位」か「得点」の列が見つからなかったら、この表は対象外として終了
   if (creditIndex === -1 || scoreIndex === -1) return;
-  // ----------------------------------------------
-
 
   const rows = table.querySelectorAll('tbody tr, tr');
   
@@ -33,10 +34,8 @@ function calculateAndDisplayGPA() {
   rows.forEach(row => {
     const cells = row.querySelectorAll('td');
     
-  
     if (cells.length <= Math.max(creditIndex, scoreIndex)) return;
 
-  
     const creditsStr = cells[creditIndex].innerText.trim();
     const scoreStr = cells[scoreIndex].innerText.trim();
 
@@ -63,14 +62,34 @@ function calculateAndDisplayGPA() {
 
   const gpa = (totalGP / totalCredits).toFixed(3);
 
-  // （これ以降の表示UIを作成する処理は元のまま）
   const resultDiv = document.createElement('div');
-  // ... (省略)
+  // --- ★追加: 無限ループ防止用の目印となるIDをセット ★ ---
+  resultDiv.id = 'livecampus-gpa-result';
+  resultDiv.style.padding = '15px';
+  resultDiv.style.margin = '20px auto';
+  resultDiv.style.maxWidth = '800px';
+  resultDiv.style.backgroundColor = '#e3f2fd';
+  resultDiv.style.borderLeft = '6px solid #1976d2';
+  resultDiv.style.fontSize = '18px';
+  resultDiv.style.fontWeight = 'bold';
+  resultDiv.style.borderRadius = '4px';
   resultDiv.innerHTML = `🌟 総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
 
   const tableWrapper = table.parentNode;
   tableWrapper.insertBefore(resultDiv, tableWrapper.firstChild);
 }
 
-// ページ読み込み完了後に実行
-window.addEventListener('load', calculateAndDisplayGPA);
+// --- ★変更: loadイベントをやめて MutationObserver を使う ★ ---
+
+// 監視カメラ（Observer）の準備
+const observer = new MutationObserver((mutations) => {
+  // DOMに変化（要素の追加や変更）があったら、とにかく計算関数を呼ぶ
+  // （関数の中で、すでに表示済みか、テーブルがあるか等をチェックして弾く）
+  calculateAndDisplayGPA();
+});
+
+// document.body を対象に、子要素の追加やテキストの変更を監視し始める
+observer.observe(document.body, {
+  childList: true, // 子ノードの追加・削除を監視
+  subtree: true    // 対象ノードの子孫すべてを監視
+});
