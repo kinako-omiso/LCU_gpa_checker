@@ -71,7 +71,7 @@ function calculateAndDisplayGPA() {
   resultDiv.style.fontSize = '18px';
   resultDiv.style.fontWeight = 'bold';
   resultDiv.style.borderRadius = '4px';
-  resultDiv.innerHTML = `🌟 総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
+  resultDiv.innerHTML = `総合GPA: <span>${gpa}</span> (取得単位数: ${totalCredits})`;
 
   const tableWrapper = table.parentNode;
   tableWrapper.insertBefore(resultDiv, tableWrapper.firstChild);
