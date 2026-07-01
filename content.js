@@ -1,5 +1,4 @@
 function calculateAndDisplayGPA() {
-  // --- ★追加: 無限ループ防止 ★ ---
   // すでに結果のUI（目印となるID）が表示されていたら、何もしないで終了
   if (document.getElementById('livecampus-gpa-result')) return;
 
@@ -79,7 +78,6 @@ function calculateAndDisplayGPA() {
   tableWrapper.insertBefore(resultDiv, tableWrapper.firstChild);
 }
 
-// --- ★変更: loadイベントをやめて MutationObserver を使う ★ ---
 
 // 監視カメラ（Observer）の準備
 const observer = new MutationObserver((mutations) => {
